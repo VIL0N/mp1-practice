@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include "Header.h"
 int main() {
-    printf("ALL");
     FILE* filep = fopen("date.CSV", "r");
     if (filep == NULL) {
         fprintf(stderr, "Error OPEN\n");

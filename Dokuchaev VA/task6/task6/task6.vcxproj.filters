@@ -26,9 +26,12 @@
     <ClInclude Include="Header.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="date.CSV">
+    <None Include="date.csv">
       <Filter>Исходные файлы</Filter>
     </None>
   </ItemGroup>
