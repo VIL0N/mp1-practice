@@ -18,7 +18,7 @@ BOOK* alloc_library(int n) {
     return ptr;
 }
 
-char* to_lower(char* arr2) { // TODO
+char* to_lower(char* arr2) {
     int j = 0;
     for (;arr2[j] != '\0';j++) {
         arr2[j] = tolower(arr2[j]);
@@ -26,8 +26,8 @@ char* to_lower(char* arr2) { // TODO
     return arr2;
 }
 char* asking() {
-    printf("\nWhich author's books are we looking for?\nIf you wanna ");
     char author[MAX_LEN] = { 0 };
+    printf("\nWhich author's books are we looking for?\nIf you wanna ");
     printf(RED "END" RESET);
     printf(" write 'exit'\n");
     scanf_s("%s", author, MAX_LEN);
