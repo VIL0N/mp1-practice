@@ -128,7 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />
-    <ClInclude Include="header.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="date.csv" />

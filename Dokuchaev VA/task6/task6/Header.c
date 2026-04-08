@@ -17,10 +17,6 @@ BOOK* alloc_library(int n) {
     BOOK* ptr = (BOOK*)malloc(n * sizeof(BOOK));
     return ptr;
 }
-BOOK** alloc_library2(int n) {
-    BOOK** ptr = (BOOK**)calloc(n, sizeof(BOOK*)); // все элементы NULL
-    return ptr;
-}
 
 char* to_lower(char* arr2) { // TODO
     int j = 0;
@@ -28,6 +24,14 @@ char* to_lower(char* arr2) { // TODO
         arr2[j] = tolower(arr2[j]);
     }
     return arr2;
+}
+char* asking() {
+    printf("\nWhich author's books are we looking for?\nIf you wanna ");
+    char author[MAX_LEN] = { 0 };
+    printf(RED "END" RESET);
+    printf(" write 'exit'\n");
+    scanf_s("%s", author, MAX_LEN);
+    return author;
 }
 
 void read_library(BOOK* book, FILE* filep) {
@@ -45,54 +49,57 @@ void read_library(BOOK* book, FILE* filep) {
         token = strtok(NULL, ";");
         strcpy(book[b].namebook, token);
         token = strtok(NULL, ";");
-        strcpy(book[b].izdatelb, token);
+        strcpy(book[b].publisher, token);
         token = strtok(NULL, ";");
         book[b].year = atoi(token);
     }
 
 }
-void print_books(BOOK** AuthorBooks, int kAuthorBooks) {
-    if (kAuthorBooks <= 0 || AuthorBooks == NULL) {
+void print_books(BOOK* books, int kauthorbooks) {
+    if (kauthorbooks <= 0 || books == NULL) {
         printf("No books found.\n");
         return;
     }
 
-    printf("Books of %s:\n\n", AuthorBooks[0]->fio);
+    printf("Books of %s:\n\n", books[0]);
 
-    for (int i = 0; i < kAuthorBooks; i++) {
-        printf(RED);
-        printf("%s\n", AuthorBooks[i]->fio);
-        printf("%s\n", AuthorBooks[i]->namebook);
-        printf("%s\n", AuthorBooks[i]->izdatelb);
-        printf("%d\n\n", AuthorBooks[i]->year);
-        printf(RESET);
+    for (int i = 0; i < kauthorbooks; i++) {
+        printf("%s\n", books[i].fio);
+        printf("%s\n", books[i].namebook);
+        printf("%s\n", books[i].publisher);
+        printf("%d\n\n", books[i].year);  
     }
 }
-void search(BOOK* book, int n, BOOK ** authorBooks, int* kAuthorBooks) { // TODO
-    
-    char author[MAX_LEN] = { 0 };
-    while (strcmp(author, "exit") != 0) {
-        char buffer[MAX_LEN];
-        int i = 0;
-
-        printf("\nWhich author's books are we looking for?\nIf you wanna ");
-        printf(RED "END" RESET);
-        printf(" write 'exit'\n");
-        scanf_s("%s", author, MAX_LEN);        
-        strcpy(buffer, author);
-        to_lower(buffer);
-        if (strcmp(buffer, "exit") == 0)
-            break;
-        (*kAuthorBooks) = 0;
-        for (;i < n; i++) {
-            char buffer2[MAX_LEN];  
-            strcpy(buffer2, book[i].fio);
-            to_lower(buffer2);
-            if (strstr(buffer2, buffer)!=NULL) {
-                authorBooks[(*kAuthorBooks)++] = &book[i];
-            }
+BOOK* search(BOOK* book, int n, char* author, int * kauthorbooks) {
+    char buffer[MAX_LEN];
+    BOOK* books;
+     int i = 0;    
+     int j = 0;
+     strcpy(buffer, author);
+     to_lower(buffer);
+     for (;i < n; i++) {
+        char buffer2[MAX_LEN];  
+        strcpy(buffer2, book[i].fio);
+        to_lower(buffer2);
+        if (strstr(buffer2, buffer)!=NULL) {
+            (*kauthorbooks)++;
         }
-        print_books(authorBooks, *kAuthorBooks);
-    }
+     }
+
+     books = alloc_library((*kauthorbooks));
+     i = 0;
+     for (;i < n; i++) {
+         char buffer2[MAX_LEN];
+         strcpy(buffer2, book[i].fio);
+         to_lower(buffer2);
+         if (strstr(buffer2, buffer) != NULL) {
+             strcpy(books[j].fio, book[i].fio);
+             strcpy(books[j].namebook, book[i].namebook);
+             strcpy(books[j].publisher, book[i].publisher);
+             books[j].year = book[i].year;
+             j++;
+         }
+     }
+     return books;
 }
 
