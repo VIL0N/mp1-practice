@@ -2,25 +2,43 @@
 #define __HEADER_H
 #define MAXLEN 256
 #define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
 typedef struct {
-	char Fio[MAXLEN];
-	char Date_Birth[MAXLEN];
-	char Registration_Number_Auto[MAXLEN];
-	char Passport_Number[MAXLEN];
-	char Phone_Number[MAXLEN];
-	char Gibdd_Number[MAXLEN];
+	char Family[MAXLEN];
+	char Name[MAXLEN];
+	char Otchestvo[MAXLEN];
+} Fio;
 
-} LIB;
+typedef struct {
+	char day[5];
+	char month[5];
+	char year[5];
+} Date;
+
+typedef struct {
+	Fio fio; 
+	Date date; 
+	char RegistrationNumberAuto[MAXLEN];
+	char PassportNumber[MAXLEN];
+	char PhoneNumber[MAXLEN];
+	char GibddNumber[MAXLEN];
+} AutoInfo;
+
+typedef struct {
+	AutoInfo* autos;
+	int data_size;
+} GibddDB;
+
+typedef struct {
+	AutoInfo* autos;
+	int count;
+} PersonalInfo;
+
+AutoInfo* alloclib(int size); 
+void read_data(FILE* filename, GibddDB* db);
 int get_data_size(FILE* filename);
-
-LIB* alloclib(int n);
-LIB** allocalloclib(int n);
-
-void read_data(FILE* filename, int n, LIB* data);
-
 void to_lower(char* arr1);
-void finderr(int n, LIB* datebase, LIB** fdatebase, int* k_needle);
-void print_gibdd_number(int k_needle, LIB** fdatebase);
+void search_registration_number_auto(GibddDB* db, PersonalInfo* persons, char* target);
 
 #endif __HEADER_H

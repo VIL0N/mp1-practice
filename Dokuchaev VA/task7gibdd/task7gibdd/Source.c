@@ -6,22 +6,30 @@
 #define MAXLEN 256
 #include <ctype.h>
 #include "header.h"
+#include "auxiliary.h"
 
 
-void main() {
-	int n = 0;
-	FILE* filep = fopen("DataGibdd.CSV", "r");
-	n = get_data_size(filep);
-	LIB* database = alloclib(n);
-	printf("%d", n);
-	read_data(filep, n, database);
-	for (int i = 0; i < n; i++) {
-		printf("%s\n", database[i].Fio);
+int main(int argc, char *argv[]) {
+	FILE* filep = NULL;
+	AutoInfo* found_database = NULL;
+	char* target = NULL;
+	GibddDB fautos;
+	PersonalInfo persons;
+	int found_count;
+	if (argc <1) {
+		printf("Wrong number of arguments");
+		return 1;
 	}
-	LIB** f_datebase = allocalloclib(n);
-	int k_needle = 0;
-	finderr(n, database, f_datebase, &k_needle);
-	print_gibdd_number(k_needle, f_datebase);
-	free(database);
-	free(f_datebase);
+	filep = fopen(argv[1], "r");
+	fautos.data_size = get_data_size(filep);
+	fautos.autos = alloclib(fautos.data_size);
+	read_data(filep, &fautos);
+	found_database = NULL;
+	target = asking();
+	search_registration_number_auto(&fautos, &persons, target);
+	print_gibdd_number(&persons);
+	//print_gibdd_number(found_count, found_database);
+	free(persons.autos);
+	free(fautos.autos);
+	return 0;
 }

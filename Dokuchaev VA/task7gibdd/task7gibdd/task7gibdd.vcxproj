@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="auxiliary.c" />
     <ClCompile Include="header.c" />
     <ClCompile Include="Source.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="auxiliary.h" />
     <ClInclude Include="header.h" />
   </ItemGroup>
   <ItemGroup>
