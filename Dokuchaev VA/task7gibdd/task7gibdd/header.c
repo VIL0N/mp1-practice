@@ -61,7 +61,7 @@ void search_registration_number_auto(GibddDB *db, PersonalInfo *persons, char* t
     int i = 0;
     int j = -1;
     char buffer[MAXLEN];
-    persons->count = 0;
+    persons->count = 0
     for (;i < db->data_size; i++) {
         strcpy(buffer, db->autos[i].GibddNumber);
         //to_lower(buffer);

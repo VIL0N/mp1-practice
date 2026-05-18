@@ -21,9 +21,15 @@
     <ClCompile Include="header.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="auxiliary.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="auxiliary.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
