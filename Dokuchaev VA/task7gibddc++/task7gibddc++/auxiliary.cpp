@@ -1,0 +1,20 @@
+#include "auxiliary.h";
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+std::string asking() {
+    std::string answer;
+    printf("Please write gibdd Number\n");
+	std::cin >> answer;
+    return answer;
+}
+
+void print_gibdd_number(AutoInfoLib& persons) {
+    for (int i = 0; i < persons.data_size;i++) {
+        std::cout << std::endl;
+        std::cout << persons.autos[i].fio;
+        std::cout << "\n->Gibdd number: " << persons.autos[i].GibddNumber<<std::endl;
+    }
+}
