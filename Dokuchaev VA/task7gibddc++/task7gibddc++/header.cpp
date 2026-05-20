@@ -5,37 +5,63 @@
 #include "fstream"
 #include <sstream>
 
- AutoInfoLib::AutoInfoLib(std::ifstream &filename):autos(nullptr), data_size(0) {
-    std::string first_line;
-    if (!std::getline(filename, first_line)) return;
-	data_size=std::stoi(first_line);
-    autos = new AutoInfo[data_size];
+PersonsLib::~PersonsLib() {
+    delete[] persons;
+};
+PersonsLib::PersonsLib(int i) {
+    count = i;
+    persons = new Fio[i];
+};
+
+bool Date::IsValid(int d, int m, int y) {
+    if (d < 0 || d>31 || m < 0 || m>12 || y < 0 || y>3000) {
+        return 0;
+    };
+    int daysinmonth[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+    if (((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0)) {
+        daysinmonth[1]+=1;
+    };
+
+    if (d < daysinmonth[m]) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+Date::Date(int d, int m, int y) {
+    if (IsValid(d, m, y) == 0) {
+        throw std::invalid_argument("invalid_argument");
+    };
+    day = d;
+    month = m;
+    year = y;
+};
+Date::Date() {
+    day = 0;
+    month = 0;
+    year = 0;
 }
 
- AutoInfoLib::~AutoInfoLib() {
-     delete [] autos;
- }
- AutoInfoLib& AutoInfoLib::operator=(const AutoInfoLib&a) {
-     if (this == &a) {
-         return *this;
-     }
-     data_size = a.data_size;
-     delete [] autos;
-     for (int i = 0; i < data_size; i++) {
-         autos[i] = a.autos[i];
-     }
-     return *this;
- }
- AutoInfoLib::AutoInfoLib(const AutoInfoLib& a) {
-     data_size = a.data_size;
-     autos = new AutoInfo[data_size];
-
-     for (int i = 0; i < data_size; i++) {
-         autos[i] = a.autos[i];
-     }
- }
-
-void read_data(std::ifstream& filen, AutoInfoLib& db) {
+AutoInfo::AutoInfo() {
+    fio.Family = "NoN";
+    fio.Name = "NoN";
+    fio.Otchestvo = "NoN";
+    date.day = 0;
+    date.month = 0;
+    date.year = 0;
+    RegistrationNumberAuto= "NoN";
+    PassportNumber = "NoN";
+    PhoneNumber = "NoN";
+    GibddNumber = "NoN";
+}
+AutoInfoLib::AutoInfoLib(std::string& filename): autos(nullptr), data_size(0) {
+    std::ifstream filen(filename);
+    std::string first_line;
+    if (!std::getline(filen, first_line)) return;
+    data_size = std::stoi(first_line);
+    autos = new AutoInfo[data_size];
     std::string buffer;
     std::getline(filen, buffer);
     int i = 0;
@@ -63,28 +89,48 @@ void read_data(std::ifstream& filen, AutoInfoLib& db) {
         tmpAutoInfo.PhoneNumber = element;
         std::getline(s, element, ';');
         tmpAutoInfo.GibddNumber = element;
-        db.autos[i] = tmpAutoInfo;
+        autos[i] = tmpAutoInfo;
         i++;
     }
+}
+AutoInfoLib::~AutoInfoLib() {
+     delete [] autos;
+ }
+AutoInfoLib::AutoInfoLib(const AutoInfoLib& a) {
+    data_size = a.data_size;
+    autos = new AutoInfo[data_size];
+     for (int i = 0; i < data_size; i++) {
+        autos[i] = a.autos[i];
+     }
 }
 AutoInfoLib::AutoInfoLib(int n) {
     data_size = n;
     autos = new AutoInfo[n];
 }
-
-AutoInfoLib AutoInfoLib::Search(const std::string& targetGibdd) const{
+const AutoInfoLib& AutoInfoLib::operator=(const AutoInfoLib& a) {
+    if (this == &a) {
+        return *this;
+    }
+    data_size = a.data_size;
+    delete[] autos;
+    for (int i = 0; i < data_size; i++) {
+        autos[i] = a.autos[i];
+    }
+    return *this;
+}
+PersonsLib AutoInfoLib::Search(const std::string& targetGibdd) const {
     int j = 0;
     for (int i = 0;i < data_size; i++) {
-         if (autos[i].GibddNumber == targetGibdd) {
-             j++;
-         }
+        if (autos[i].GibddNumber == targetGibdd) {
+            j++;
+        }
     }
-    AutoInfoLib result(j);
+    PersonsLib result(j);
     j = 0;
     for (int i = 0; i < data_size; i++) {
-        if (autos[i].GibddNumber==targetGibdd)
+        if (autos[i].GibddNumber == targetGibdd)
         {
-            result.autos[j] = autos[i];
+            result.persons[j] = autos[i].fio;
             j++;
         }
     }

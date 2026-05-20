@@ -11,10 +11,8 @@ std::string asking() {
     return answer;
 }
 
-void print_gibdd_number(AutoInfoLib& persons) {
-    for (int i = 0; i < persons.data_size;i++) {
-        std::cout << std::endl;
-        std::cout << persons.autos[i].fio;
-        std::cout << "\n->Gibdd number: " << persons.autos[i].GibddNumber<<std::endl;
+void print_gibdd_number(PersonsLib& persons) {
+    for (int i = 0; i < persons.count;i++) {
+        std::cout << persons.persons[i];
     }
 }

@@ -8,7 +8,7 @@
 #include <fstream>
 
 struct Fio {
-	std::string Family;
+	std::string Family; 
 	std::string Name;
 	std::string Otchestvo;
 	friend std::ostream& operator<<(std::ostream& os, const Fio& f) {
@@ -17,14 +17,33 @@ struct Fio {
 	}
 };
 
+struct PersonsLib {
+	int count;
+	Fio* persons;
+	friend std::ostream& operator<<(std::ostream& os, const PersonsLib& f)
+	{
+		for (int i = 0; i < f.count; i++)
+		{
+			os << f.persons[i] << "\n";
+		}
+		return os;
+	};
+	PersonsLib(int);
+	~PersonsLib();
+};
+
 struct Date {
 	int day;
 	int month;
 	int year;
+	bool IsValid(int, int, int);
+	Date(int, int, int);
+	Date();
 	friend std::ostream& operator<<(std::ostream& os, const Date& d) {
 		os << d.day << " " << d.month << " " << d.year;
 		return os;
 	}
+
 };
 
 struct AutoInfo {
@@ -38,24 +57,23 @@ struct AutoInfo {
 		os << a.date << " " << a.fio << " " << a.GibddNumber << " " << a.PassportNumber << " " << a.PhoneNumber << " " << a.RegistrationNumberAuto;
 		return os;
 	}
+	AutoInfo();
 };
 
 struct AutoInfoLib {
 	AutoInfo* autos; 
 	size_t data_size;
 	AutoInfoLib() : autos(nullptr), data_size(0) {}
-	AutoInfoLib(std::ifstream& filename);
+	AutoInfoLib(std::string& filename);
 	AutoInfoLib(int);
 	~AutoInfoLib();
 	AutoInfoLib(const AutoInfoLib&);
-	AutoInfoLib Search(const std::string& targetGibdd) const;
+	PersonsLib Search(const std::string& targetGibdd) const;
 	friend std::ostream& operator<<(std::ostream& os, const AutoInfoLib& a) {
 		os << a.autos;
 		return os;
 	}
-	AutoInfoLib& operator=(const AutoInfoLib&);
+	const AutoInfoLib& operator=(const AutoInfoLib&);
 };
-
-void read_data(std::ifstream& filen, AutoInfoLib& db);
 
 #endif // __HEADER_H
