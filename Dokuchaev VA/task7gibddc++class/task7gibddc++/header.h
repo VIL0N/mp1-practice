@@ -23,6 +23,22 @@ public:
 	const std::string& getLastname() const { return lastname; };
 };
 
+struct PersonsLib {
+	int count;
+	Fio* persons;
+	friend std::ostream& operator<<(std::ostream& os, const PersonsLib& f)
+	{
+		for (int i = 0; i < f.count; i++)
+		{
+			os << f.persons[i] << "\n";
+		}
+		return os;
+	};
+	public:
+	PersonsLib(int);
+	~PersonsLib();
+};
+
 class Date {
 	int day;
 	int month;
@@ -32,9 +48,17 @@ class Date {
 		return os;
 	}
 public:
+	bool IsValid(int, int, int);
+	Date(int, int, int);
+	Date();
 	void setDay(std::string& n) { day = stoi(n); };
 	void setMonth(std::string& n) { month = stoi(n); };
 	void setYear(std::string& n) { year = stoi(n); };
+
+	void setDay(int n) { day = n; };
+	void setMonth(int n) { month = n ; };
+	void setYear(int n) { year = n; };
+
 	int& getDay() { return day; };
 	int& getMonth() { return month; };
 	int& getYear() { return year; };
@@ -52,6 +76,7 @@ public:
 		os << a.date << " " << a.fio << " " << a.GibddNumber << " " << a.PassportNumber << " " << a.PhoneNumber << " " << a.RegistrationNumber;
 		return os;
 	}
+	AutoInfo();
 	Fio& getFio() { return fio; };
 	Date& getDate() { return date; };
 	std::string& getRegistrationNumber() { return RegistrationNumber; };
@@ -70,22 +95,20 @@ private:
 	int datasize;
 public:
 	AutoInfoLib() : autos(nullptr), datasize(0) {}
-	AutoInfoLib(std::ifstream& filename);
+	AutoInfoLib(std::string& filename);
 	AutoInfoLib(int);
 	~AutoInfoLib();
 	AutoInfoLib(const AutoInfoLib&);
-	AutoInfoLib Search(const std::string& targetGibdd) const;
+	PersonsLib Search(const std::string& targetGibdd) const;
 	friend std::ostream& operator<<(std::ostream& os, const AutoInfoLib& a) {
 		for (int i = 0; i < a.datasize; i++) {
 			os << a.autos[i] << "\n";
 		}
 		return os;
 	}
-	AutoInfoLib& operator=(const AutoInfoLib&);
+	const AutoInfoLib& operator=(const AutoInfoLib&);
 	AutoInfo* getAutos() { return autos; };
 	int& getDatasize() { return datasize; };
 };
-
-void read_data(std::ifstream& filen, AutoInfoLib& db);
 
 #endif // __HEADER_H

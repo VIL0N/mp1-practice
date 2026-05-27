@@ -7,14 +7,6 @@
 std::string asking() {
     std::string answer;
     printf("Please write gibdd Number\n");
-	std::cin >> answer;
+    std::cin >> answer;
     return answer;
-}
-
-void print_gibdd_number(AutoInfoLib& persons) {
-    for (int i = 0; i < persons.getDatasize();i++) {
-        std::cout << std::endl;
-        std::cout << persons.getAutos()[i].getFio();
-        std::cout << "\n->Gibdd number: " << persons.getAutos()[i].getGibddNumber()<<std::endl;
-    }
-}
+};

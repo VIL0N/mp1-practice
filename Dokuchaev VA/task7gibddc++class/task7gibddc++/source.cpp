@@ -13,11 +13,17 @@ int main(int argc, char* argv[]) {
 		std::cout << "Wrong";
 		return 1;
 	}
-	std::ifstream filen(argv[1]);
-	AutoInfoLib db(filen);
-	read_data(filen, db);
-	std::string target = asking();
-	AutoInfoLib persons=db.Search(target);
-	print_gibdd_number(persons);
+	std::string targett = argv[1];
+
+	try {
+		AutoInfoLib db(targett);
+		std::string target = asking();
+		PersonsLib persons = db.Search(target);
+		std::cout << persons;
+	}
+	catch (...) {
+		std::cout << "error";
+	}
+
 	return 0;
 }

@@ -5,38 +5,65 @@
 #include "fstream"
 #include <sstream>
 
- AutoInfoLib::AutoInfoLib(std::ifstream &filename):autos(nullptr), datasize(0) {
+PersonsLib::~PersonsLib() {
+    delete[] persons;
+};
+PersonsLib::PersonsLib(int i) {
+    count = i;
+    persons = new Fio[i];
+};
+
+bool Date::IsValid(int d, int m, int y) {
+    if (d < 0 || d>31 || m < 0 || m>12 || y < 0 || y>3000) {
+        return 0;
+    };
+    int daysinmonth[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+    if (((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0)) {
+        daysinmonth[1] += 1;
+    };
+
+    if (d < daysinmonth[m]) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+};
+
+Date::Date(int d, int m, int y) {
+    if (IsValid(d, m, y) == 0) {
+        throw std::invalid_argument("invalid_argument");
+    };
+    day = d;
+    month = m;
+    year = y;
+};
+Date::Date() {
+    day = 0;
+    month = 0;
+    year = 0;
+};
+AutoInfo::AutoInfo() {
+    std::string x = " ";
+    fio.setFamily(x);
+    fio.setName(x);
+    fio.setLastname(x);
+    date.setDay(0);
+    date.setMonth(0);
+    date.setYear(0);
+    setRegistrationNumber(x);
+    setPassportNumber(x);
+    setPhoneNumber(x);
+    setGibddNumber(x);
+};
+
+AutoInfoLib::AutoInfoLib(std::string& filename) : autos(nullptr), datasize(0) {
+    std::ifstream filen(filename);
     std::string first_line;
-    if (!std::getline(filename, first_line)) return;
-	datasize=std::stoi(first_line);
+    if (!std::getline(filen, first_line)) return;
+    datasize = std::stoi(first_line);
     autos = new AutoInfo[datasize];
-}
-
- AutoInfoLib::~AutoInfoLib() {
-     delete [] autos;
- }
- AutoInfoLib& AutoInfoLib::operator=(const AutoInfoLib&a) {
-     if (this == &a) {
-         return *this;
-     }
-     datasize = a.datasize;
-     delete [] autos;
-     autos = new AutoInfo[a.datasize];
-     for (int i = 0; i < datasize; i++) {
-         autos[i] = a.autos[i];
-     }
-     return *this;
- }
- AutoInfoLib::AutoInfoLib(const AutoInfoLib& a) {
-     datasize = a.datasize;
-     autos = new AutoInfo[datasize];
-
-     for (int i = 0; i < datasize; i++) {
-         autos[i] = a.autos[i];
-     }
- }
-
-void read_data(std::ifstream& filen, AutoInfoLib& db) {
     std::string buffer;
     std::getline(filen, buffer);
     int i = 0;
@@ -64,33 +91,58 @@ void read_data(std::ifstream& filen, AutoInfoLib& db) {
         tmpAutoInfo.setPhoneNumber(element);
         std::getline(s, element, ';');
         tmpAutoInfo.setGibddNumber(element);
-        db.getAutos()[i] = tmpAutoInfo;
+        autos[i] = tmpAutoInfo;
         i++;
-    }
-}
+    };
+};
+
+AutoInfoLib::~AutoInfoLib() {
+    delete[] autos;
+};
+
+AutoInfoLib::AutoInfoLib(const AutoInfoLib& a) {
+    datasize = a.datasize;
+    autos = new AutoInfo[datasize];
+    for (int i = 0; i < datasize; i++) {
+        autos[i] = a.autos[i];
+    };
+};
+
 AutoInfoLib::AutoInfoLib(int n) {
     datasize = n;
     autos = new AutoInfo[n];
-}
+};
 
-AutoInfoLib AutoInfoLib::Search(const std::string& targetGibdd) const{
+const AutoInfoLib& AutoInfoLib::operator=(const AutoInfoLib& a) {
+    if (this == &a) {
+        return *this;
+    };
+    datasize = a.datasize;
+    delete[] autos;
+    for (int i = 0; i < datasize; i++) {
+        autos[i] = a.autos[i];
+    };
+    return *this;
+};
+
+PersonsLib AutoInfoLib::Search(const std::string& targetGibdd) const {
     int j = 0;
     for (int i = 0;i < datasize; i++) {
-         if (autos[i].getGibddNumber() == targetGibdd) {
-             j++;
-         }
-    }
-    AutoInfoLib result(j);
+        if (autos[i].getGibddNumber() == targetGibdd) {
+            j++;
+        };
+    };
+    PersonsLib result(j);
     j = 0;
     for (int i = 0; i < datasize; i++) {
-        if (autos[i].getGibddNumber() ==targetGibdd)
+        if (autos[i].getGibddNumber() == targetGibdd)
         {
-            result.autos[j] = autos[i];
+            result.persons[j] = autos[i].getFio();
             j++;
-        }
-    }
+        };
+    };
     if (j == 0) {
         throw std::runtime_error("Nothing has been found");
-    }
+    };
     return result;
-}
+};
