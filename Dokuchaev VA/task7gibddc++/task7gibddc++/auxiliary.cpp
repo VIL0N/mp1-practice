@@ -11,8 +11,3 @@ std::string asking() {
     return answer;
 }
 
-void print_gibdd_number(PersonsLib& persons) {
-    for (int i = 0; i < persons.count;i++) {
-        std::cout << persons.persons[i];
-    }
-}

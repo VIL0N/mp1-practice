@@ -6,7 +6,6 @@
 #include "string.h"
 
 std::string asking();
-void print_gibdd_number(PersonsLib& persons);
 
 #endif __HEADER2_H
 

@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 		AutoInfoLib db(targett);
 		std::string target = asking();
 		PersonsLib persons = db.Search(target);
-		print_gibdd_number(persons);
+		std::cout << persons;
 	}
 	catch (...) {
 		std::cout << "error";

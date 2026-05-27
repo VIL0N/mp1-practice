@@ -54,7 +54,8 @@ struct AutoInfo {
 	std::string PhoneNumber;
 	std::string GibddNumber;
 	friend std::ostream& operator<<(std::ostream &os, const AutoInfo& a) {
-		os << a.date << " " << a.fio << " " << a.GibddNumber << " " << a.PassportNumber << " " << a.PhoneNumber << " " << a.RegistrationNumberAuto;
+		os << a.date << " " << a.fio << " " << a.GibddNumber << " " <<
+			a.PassportNumber << " " << a.PhoneNumber << " " << a.RegistrationNumberAuto;
 		return os;
 	}
 	AutoInfo();
